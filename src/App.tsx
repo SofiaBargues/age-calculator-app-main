@@ -37,7 +37,18 @@ function App() {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    console.log(data.get(YEAR_TAG), data.get(MONTH_TAG), data.get(DAY_TAG));
+    const day = Number(data.get(DAY_TAG));
+    const month = Number(data.get(MONTH_TAG));
+    const year = Number(data.get(YEAR_TAG));
+
+    console.log(
+      day,
+      month,
+      year,
+      data.get(YEAR_TAG),
+      data.get(MONTH_TAG),
+      data.get(DAY_TAG)
+    );
   }
 
   return (
