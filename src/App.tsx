@@ -1,9 +1,36 @@
 // import { useState } from "react";
 // import viteLogo from "/vite.svg";
 
+import { useState } from "react";
+
 const YEAR_TAG = "year";
 const MONTH_TAG = "month";
 const DAY_TAG = "day";
+
+function Input({ name, text }: { name: string; text: string }) {
+  const [value, setValue] = useState("");
+  console.log(value);
+
+  const onChange = (event) => {
+    const inputValue = event.target.value;
+    if (/^[0-9]*$/.test(inputValue)) {
+      setValue(inputValue);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-1">
+      <label htmlFor={name}>{text}</label>
+      <input
+        onChange={onChange}
+        value={value}
+        name={name}
+        id={name}
+        className="border-2 rounded-lg h-[52px] w-[85px]"
+      />
+    </div>
+  );
+}
 
 function App() {
   function handleSubmit(event) {
@@ -21,33 +48,10 @@ function App() {
           action=""
           className="flex font-bold text-[#565656] text-xs flex-row w-full justify-between"
         >
-          <div className="flex flex-col gap-1">
-            <label htmlFor={DAY_TAG}>DAY</label>
-            <input
-              type="number"
-              name={DAY_TAG}
-              id={DAY_TAG}
-              className="border-2 rounded-lg h-[52px] w-[85px]"
-            />
-          </div>
-          <div className="flex flex-col  gap-1">
-            <label htmlFor="month">MONTH</label>
-            <input
-              type="number"
-              name={MONTH_TAG}
-              id={MONTH_TAG}
-              className="border-2 rounded-lg h-[52px] w-[85px]"
-            />
-          </div>
-          <div className="flex flex-col  gap-1">
-            <label htmlFor={YEAR_TAG}>YEAR</label>
-            <input
-              type="number"
-              name={YEAR_TAG}
-              id={YEAR_TAG}
-              className="border-2 rounded-lg h-[52px] w-[85px]"
-            />
-          </div>
+          <Input name={DAY_TAG} text="DAY" />
+          <Input name={MONTH_TAG} text="MONTH" />
+          <Input name={YEAR_TAG} text="YEAR" />
+
           <hr className="relative top-12"></hr>
           <div className="flex justify-center">
             <button
