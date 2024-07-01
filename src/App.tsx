@@ -46,17 +46,19 @@ function App() {
         <form
           onSubmit={handleSubmit}
           action=""
-          className="flex font-bold text-[#565656] text-xs flex-row w-full justify-between"
+          className="flex font-bold text-[#565656] text-xs flex-col w-full"
         >
-          <Input name={DAY_TAG} text="DAY" />
-          <Input name={MONTH_TAG} text="MONTH" />
-          <Input name={YEAR_TAG} text="YEAR" />
+          <div className="flex flex-row justify-between">
+            <Input name={DAY_TAG} text="DAY" />
+            <Input name={MONTH_TAG} text="MONTH" />
+            <Input name={YEAR_TAG} text="YEAR" />
+          </div>
 
           <hr className="relative top-12"></hr>
           <div className="flex justify-center">
             <button
               type="submit"
-              className="h-[60px] w-[60px] bg-[#844efe] rounded-full relative"
+              className="h-[60px] w-[60px] top-4 bg-[#844efe] rounded-full relative"
             >
               <img
                 src="/icon-arrow.svg"
