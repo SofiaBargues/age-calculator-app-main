@@ -7,7 +7,17 @@ const YEAR_TAG = "year";
 const MONTH_TAG = "month";
 const DAY_TAG = "day";
 
-function Input({ name, text }: { name: string; text: string }) {
+function Input({
+  name,
+  text,
+  isError,
+  errorMessage,
+}: {
+  name: string;
+  text: string;
+  isError: boolean;
+  errorMessage: string;
+}) {
   const [value, setValue] = useState("");
   console.log(value);
 
@@ -26,13 +36,30 @@ function Input({ name, text }: { name: string; text: string }) {
         value={value}
         name={name}
         id={name}
-        className="border-2 rounded-lg h-[52px] w-[85px]"
+        className={
+          "border-2 rounded-lg h-[52px] w-[85px] " +
+          (isError ? " bg-red-500" : " bg-white")
+        }
       />
+      {errorMessage}
     </div>
   );
 }
 
 function App() {
+  const [dayErrorMessage, setDayErrorMessage] = useState("");
+  const isDayError = dayErrorMessage !== "";
+  // const isDayError = dayErrorMessage ? true : false;
+  // console.log(isDayError, dayErrorMessage);
+
+  const [monthErrorMessage, setMonthErrorMessage] = useState("");
+  const isMonthError = monthErrorMessage !== "";
+  // console.log(isMonthError, monthErrorMessage);
+
+  const [yearErrorMessage, setYearErrorMessage] = useState("");
+  const isYearError = yearErrorMessage !== "";
+  // console.log(isYearError, yearErrorMessage);
+
   function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target);
@@ -40,32 +67,31 @@ function App() {
     const day = Number(data.get(DAY_TAG));
     const month = Number(data.get(MONTH_TAG));
     const year = Number(data.get(YEAR_TAG));
-    // parte logica -> validacion
 
     if (day >= 1 && day <= 31) {
-      console.log("");
+      setDayErrorMessage("");
     } else {
-      console.log("Must be a valid day");
+      setDayErrorMessage("Must be a valid day");
     }
     if (month >= 1 && month <= 12) {
-      console.log("");
+      setMonthErrorMessage("");
     } else {
-      console.log("Must be a valid month");
+      setMonthErrorMessage("Must be a valid month");
     }
     if (year <= 2024) {
-      console.log("");
+      setYearErrorMessage("");
     } else {
-      console.log("Must be in the past");
+      setYearErrorMessage("Must be in the past");
     }
 
-    console.log(
-      day,
-      month,
-      year,
-      data.get(YEAR_TAG),
-      data.get(MONTH_TAG),
-      data.get(DAY_TAG)
-    );
+    // console.log(
+    //   day,
+    //   month,
+    //   year,
+    //   data.get(YEAR_TAG),
+    //   data.get(MONTH_TAG),
+    //   data.get(DAY_TAG)
+    // );
   }
 
   return (
@@ -77,9 +103,24 @@ function App() {
           className="flex font-bold text-[#565656] text-xs flex-col w-full"
         >
           <div className="flex flex-row justify-between">
-            <Input name={DAY_TAG} text="DAY" />
-            <Input name={MONTH_TAG} text="MONTH" />
-            <Input name={YEAR_TAG} text="YEAR" />
+            <Input
+              isError={isDayError}
+              name={DAY_TAG}
+              text="DAY"
+              errorMessage={dayErrorMessage}
+            />
+            <Input
+              isError={isMonthError}
+              name={MONTH_TAG}
+              text="MONTH"
+              errorMessage={monthErrorMessage}
+            />
+            <Input
+              isError={isYearError}
+              name={YEAR_TAG}
+              text="YEAR"
+              errorMessage={yearErrorMessage}
+            />
           </div>
 
           <hr className="relative top-12"></hr>
