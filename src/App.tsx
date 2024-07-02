@@ -40,6 +40,23 @@ function App() {
     const day = Number(data.get(DAY_TAG));
     const month = Number(data.get(MONTH_TAG));
     const year = Number(data.get(YEAR_TAG));
+    // parte logica -> validacion
+
+    if (day >= 1 && day <= 31) {
+      console.log("");
+    } else {
+      console.log("Must be a valid day");
+    }
+    if (month >= 1 && month <= 12) {
+      console.log("");
+    } else {
+      console.log("Must be a valid month");
+    }
+    if (year <= 2024) {
+      console.log("");
+    } else {
+      console.log("Must be in the past");
+    }
 
     console.log(
       day,
