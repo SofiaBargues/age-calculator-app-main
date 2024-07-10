@@ -26,22 +26,26 @@ function Input({
     if (/^[0-9]*$/.test(inputValue)) {
       setValue(inputValue);
     }
+    console.log(event.target.value);
   };
-
   return (
-    <div className="flex flex-col gap-1">
-      <label htmlFor={name}>{text}</label>
+    <div className="flex flex-col gap-1 md:text-base">
+      <label className={isError ? "text-red-400" : ""} htmlFor={name}>
+        {text}
+      </label>
       <input
         onChange={onChange}
         value={value}
         name={name}
         id={name}
         className={
-          "border-2 rounded-lg h-[52px] w-[85px] " +
-          (isError ? " bg-red-500" : " bg-white")
+          "border p-3 rounded-lg h-[52px] text-xl w-[85px] md:h-[70px] md:text-3xl md:w-[156px] bg-white" +
+          (isError ? " border-red-400 " : "border-gray-300")
         }
       />
-      {errorMessage}
+      <div className="text-red-400 text-[7px] md:text-sm font-normal italic">
+        {errorMessage}
+      </div>
     </div>
   );
 }
@@ -60,7 +64,11 @@ function App() {
   const isYearError = yearErrorMessage !== "";
   // console.log(isYearError, yearErrorMessage);
 
+  const [day, setDay] = useState("26");
+  const [month, setMonth] = useState("3");
+  const [year, setYear] = useState("38");
   function handleSubmit(event) {
+    // --------- GETTING DATA FROM FORM ---------
     event.preventDefault();
     const data = new FormData(event.target);
 
@@ -68,6 +76,9 @@ function App() {
     const month = Number(data.get(MONTH_TAG));
     const year = Number(data.get(YEAR_TAG));
     let errorFound = false;
+
+    // --------- VALIDATION ----------
+
     if (day >= 1 && day <= 31) {
       setDayErrorMessage("");
     } else {
@@ -87,28 +98,49 @@ function App() {
       setYearErrorMessage("Must be in the past");
     }
 
-    // errorFound ?
-    console.log(errorFound);
+    // --------- UPDATING Year, Month, Day display ----------
 
-    // console.log(
-    //   day,
-    //   month,
-    //   year,
-    //   data.get(YEAR_TAG),
-    //   data.get(MONTH_TAG),
-    //   data.get(DAY_TAG)
-    // );
+    if (!errorFound) {
+      const birthDate = new Date(year, month - 1, day);
+      const today = new Date();
+
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+      if (ageDays < 0) {
+        ageMonths--;
+        const lastMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() - 1,
+          0
+        );
+        ageDays += lastMonth.getDate();
+      }
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      setDay(String(ageDays));
+      setMonth(ageMonths.toString());
+      setYear(ageYears.toString());
+    } else {
+      setDay("--");
+      setMonth("--");
+      setYear("--");
+    }
   }
 
   return (
     <div className="bg-[#f0f0f0] font-poppins h-screen flex justify-center">
-      <div className="bg-white p-[24px] flex flex-col justify-evenly h-[490px] w-[343px] m-auto rounded-3xl rounded-br-[100px]">
+      <div className="bg-white p-[24px] flex flex-col justify-evenly h-[490px] w-[343px] md:h-[680px] md:w-[840px] m-auto rounded-3xl rounded-br-[100px]">
         <form
           onSubmit={handleSubmit}
           action=""
           className="flex font-bold text-[#565656] text-xs flex-col w-full"
         >
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between md:justify-start md:gap-14">
             <Input
               isError={isDayError}
               name={DAY_TAG}
@@ -130,10 +162,10 @@ function App() {
           </div>
 
           <hr className="relative top-12"></hr>
-          <div className="flex justify-center">
+          <div className="flex justify-center md:justify-end">
             <button
               type="submit"
-              className="h-[60px] w-[60px] top-4 bg-[#844efe] rounded-full relative"
+              className="h-[60px] w-[60px] top-4 bg-[#844efe] hover:bg-black rounded-full relative"
             >
               <img
                 src="/icon-arrow.svg"
@@ -146,13 +178,13 @@ function App() {
         </form>
         <div className="text-[50px] font-extrabold italic ">
           <div>
-            <span className="text-[#884eff]">38</span> years
+            <span className="text-[#884eff]">{year}</span> years
           </div>
           <div>
-            <span className="text-[#884eff]">3 </span> months
+            <span className="text-[#884eff]">{month}</span> months
           </div>
           <div>
-            <span className="text-[#884eff]">26</span> days
+            <span className="text-[#884eff]">{day}</span> days
           </div>
         </div>
       </div>
