@@ -67,22 +67,28 @@ function App() {
     const day = Number(data.get(DAY_TAG));
     const month = Number(data.get(MONTH_TAG));
     const year = Number(data.get(YEAR_TAG));
-
+    let errorFound = false;
     if (day >= 1 && day <= 31) {
       setDayErrorMessage("");
     } else {
+      errorFound = true;
       setDayErrorMessage("Must be a valid day");
     }
     if (month >= 1 && month <= 12) {
       setMonthErrorMessage("");
     } else {
+      errorFound = true;
       setMonthErrorMessage("Must be a valid month");
     }
     if (year <= 2024) {
       setYearErrorMessage("");
     } else {
+      errorFound = true;
       setYearErrorMessage("Must be in the past");
     }
+
+    // errorFound ?
+    console.log(errorFound);
 
     // console.log(
     //   day,
