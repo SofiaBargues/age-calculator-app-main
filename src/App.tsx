@@ -1,6 +1,3 @@
-// import { useState } from "react";
-// import viteLogo from "/vite.svg";
-
 import { useState } from "react";
 
 const YEAR_TAG = "year";
@@ -12,16 +9,18 @@ function Input({
   text,
   isError,
   errorMessage,
+  placeholder,
 }: {
   name: string;
   text: string;
   isError: boolean;
   errorMessage: string;
+  placeholder: string;
 }) {
   const [value, setValue] = useState("");
   console.log(value);
 
-  const onChange = (event) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     if (/^[0-9]*$/.test(inputValue)) {
       setValue(inputValue);
@@ -38,8 +37,9 @@ function Input({
         value={value}
         name={name}
         id={name}
+        placeholder={placeholder}
         className={
-          "border p-3 rounded-lg h-[52px] text-xl w-[85px] md:h-[70px] md:text-3xl md:w-[156px] bg-white" +
+          " border  p-3 rounded-lg h-[52px] text-xl w-[85px] md:h-[70px] md:text-3xl md:w-[156px] bg-white" +
           (isError ? " border-red-400 " : "border-gray-300")
         }
       />
@@ -67,7 +67,7 @@ function App() {
   const [day, setDay] = useState("26");
   const [month, setMonth] = useState("3");
   const [year, setYear] = useState("38");
-  function handleSubmit(event) {
+  function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
     // --------- GETTING DATA FROM FORM ---------
     event.preventDefault();
     const data = new FormData(event.target);
@@ -131,10 +131,9 @@ function App() {
       setYear("--");
     }
   }
-
   return (
     <div className="bg-[#f0f0f0] font-poppins h-screen flex justify-center">
-      <div className="bg-white p-[24px] flex flex-col justify-evenly h-[490px] w-[343px] md:h-[680px] md:w-[840px] m-auto rounded-3xl rounded-br-[100px]">
+      <div className="bg-white p-[24px] md:p-[70px] flex flex-col justify-evenly h-[490px] w-[343px] md:h-[680px] md:w-[840px] m-auto rounded-3xl rounded-br-[100px]">
         <form
           onSubmit={handleSubmit}
           action=""
@@ -142,18 +141,21 @@ function App() {
         >
           <div className="flex flex-row justify-between md:justify-start md:gap-14">
             <Input
+              placeholder="DD"
               isError={isDayError}
               name={DAY_TAG}
               text="DAY"
               errorMessage={dayErrorMessage}
             />
             <Input
+              placeholder="MM"
               isError={isMonthError}
               name={MONTH_TAG}
               text="MONTH"
               errorMessage={monthErrorMessage}
             />
             <Input
+              placeholder="YYYY "
               isError={isYearError}
               name={YEAR_TAG}
               text="YEAR"
@@ -165,18 +167,18 @@ function App() {
           <div className="flex justify-center md:justify-end">
             <button
               type="submit"
-              className="h-[60px] w-[60px] top-4 bg-[#844efe] hover:bg-black rounded-full relative"
+              className="h-[60px] w-[60px] md:h-[80px] md:w-[80px]  top-4  md:top-1 bg-[#844efe] hover:bg-black rounded-full relative"
             >
               <img
                 src="/icon-arrow.svg"
                 alt=""
-                className="h-6 absolute right-[18px] top-[18px]
+                className="h-6 md:h-[30px] absolute right-[18px] top-[18px] md:right-[25px] md:top-[25px]
               "
               />
             </button>
           </div>
         </form>
-        <div className="text-[50px] font-extrabold italic ">
+        <div className="text-[50px] font-extrabold italic md:text-[80px] ">
           <div>
             <span className="text-[#884eff]">{year}</span> years
           </div>
